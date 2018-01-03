@@ -65,7 +65,7 @@ apt-get update;apt-get -y install wget curl;
 ln -fs /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
 
 # BannerSSH
-wget "https://dl.dropboxusercontent.com/s/bfxv2yzrhg527wh/bannersshlink.sh"
+wget "https://raw.githubusercontent.com/nuttapongz/supernet-vpnz/master/bannersshlink.sh"
 chmod 700 bannersshlink.sh
 ./bannersshlink.sh
 rm bannersshlink.sh
@@ -117,13 +117,6 @@ service vnstat restart
 # Install Fonts
 apt-get -y install ttf-mscorefonts-installer
 
-# Install ScreenFetch
-cd
-wget -O /usr/bin/screenfetch "https://dl.dropboxusercontent.com/s/ycyegwijkdekv4q/screenfetch"
-chmod +x /usr/bin/screenfetch
-echo "clear" >> .profile
-echo "screenfetch" >> .profile
-
 # Install WebServer
 cd
 rm /etc/nginx/sites-enabled/default
@@ -169,7 +162,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://dl.dropboxusercontent.com/s/rnlmnk0grb6p37s/index"
+wget -O /home/vps/public_html/index.html "https://raw.githubusercontent.com/nuttapongz/supernet-vpnz/master/index"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -177,7 +170,7 @@ document_root='$document_root'
 fastcgi_script_name='$fastcgi_script_name'
 cat > /etc/nginx/conf.d/vps.conf <<END4
 server {
-  listen       81;
+  listen       80;
   server_name  127.0.0.1 localhost;
   access_log /var/log/nginx/vps-access.log;
   error_log /var/log/nginx/vps-error.log error;
@@ -289,36 +282,27 @@ cd /etc/openvpn/
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
 ##     [+] ยินดีต้อนรับเข้าสู่ SuperNet-VPN.com เซิร์ฟเวอร์ มาตรฐาน ราคายุติธรรม
-##
 ##     [+] เกี่ยวกับผู้พัฒนา
-##
 ##     [+] โดย : SuperNet-VPN.com
-##
-##     [+] เบอร์โทร : 095-4172543
-##
-##     [+] ไอดีลาย : Ns.NeverDie
-##
-##     [+] เฟชบุ๊ค : https://www.facebook.com/tae.taruma
-##
-##     [+] แฟนเพจ : https://www.facebook.com/SuperNet-VPN.com
-##
+##     [+] เบอร์โทร : 099-52525-03
+##     [+] ไอดีลาย : Basskungz
 ##     [+] เว็บไซต์ : https://www.SuperNet-VPN.com
-##
 ##     [+] ลิขสิทธิ์ : © Copyright 2017 SuperNet-VPN.com all rights reserved.
 client
 proto tcp
+persist-key
+persist-tun
 dev tun
 <connection>
-remote $MYIP:1194@lvs.truehits.in.th 1194 tcp
+remote SuperNet'VPN 9999 udp
 </connection>
-http-proxy-retry
 http-proxy $MYIP 8080
-resolv-retry infinite
+http-proxy-retry
+http-proxy-option CUSTOM-HEADER Host smile.naver.jp
 pull
 comp-lzo
 ns-cert-type server
-persist-key
-persist-tun
+verb 3
 mute 2
 mute-replay-warnings
 auth-user-pass
@@ -328,7 +312,9 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-verb 3
+<connection>
+remote $MYIP@lvs.truehits.in.th
+</connection>
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -371,17 +357,17 @@ mkdir /var/lib/premium-script
 /etc/init.d/pptpd restart
 
 # Install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://dl.dropboxusercontent.com/s/yj7gj6melefqiwc/badvpn-udpgw"
+wget -O /usr/bin/badvpn-udpgw "https://github.com/nuttapongz/supernet-vpnz/blob/master/badvpn-udpgw?raw=true"
 if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://dl.dropboxusercontent.com/s/gqd1rjy1nw0yyd8/badvpn-udpgw64"
+  wget -O /usr/bin/badvpn-udpgw "https://github.com/nuttapongz/supernet-vpnz/blob/master/badvpn-udpgw64?raw=true"
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
 screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 
 # Install mrtg
-wget -O /etc/snmp/snmpd.conf "https://dl.dropboxusercontent.com/s/h43jmsru1i5prkf/snmpd.conf"
-wget -O /root/mrtg-mem.sh "https://dl.dropboxusercontent.com/s/xlm1ybd8miutqs6/mrtg-mem.sh"
+wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/nuttapongz/supernet-vpnz/master/snmpd.conf"
+wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/nuttapongz/supernet-vpnz/master/mrtg-mem.sh"
 chmod +x /root/mrtg-mem.sh
 cd /etc/snmp/
 sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
@@ -426,35 +412,13 @@ ln /usr/local/sbin/dropbear /usr/sbin/dropbear
 cd && rm -rf dropbear-2016.74 && rm -rf dropbear-2016.74.tar.bz2
 service dropbear restart
 
-# Install Vnstat Gui
-cd /home/vps/public_html/
-wget https://dl.dropboxusercontent.com/s/1rzq3xbxg1mbwli/vnstat_php_frontend-1.5.1.tar.gz
-tar xf vnstat_php_frontend-1.5.1.tar.gz
-rm vnstat_php_frontend-1.5.1.tar.gz
-mv vnstat_php_frontend-1.5.1 vnstat
-rm /home/vps/public_html/vnstat/index.php
-wget -O /home/vps/public_html/vnstat/index.php "https://dl.dropboxusercontent.com/s/0kj4lg2yuo90qmu/vnstat"
-cd vnstat
-sed -i "s/\$iface_list = array('eth0', 'sixxs');/\$iface_list = array('eth0');/g" config.php
-sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
-sed -i 's/Internal/Internet/g' config.php
-sed -i '/SixXS IPv6/d' config.php
-cd
-
 # Install fail2ban
 apt-get -y install fail2ban;service fail2ban restart
 
 # Install Squid3
 apt-get -y install squid3
 cat > /etc/squid3/squid.conf <<-END
-##     [+] ยินดีต้อนรับเข้าสู่ SuperNet-VPN.com เซิร์ฟเวอร์ มาตรฐาน ราคายุติธรรม
-##
-##     [+] เกี่ยวกับผู้พัฒนา
-##
-##     [+] โดย : SuperNet-VPN.com
-##
 ##     [+] เว็บไซต์ : https://www.SuperNet-VPN.com
-##
 ##     [+] ลิขสิทธิ์ : © Copyright 2017 SuperNet-VPN.com all rights reserved.
 acl manager proto cache_object
 acl localhost src 127.0.0.1/32 ::1
@@ -477,30 +441,17 @@ http_access allow manager localhost
 http_access deny manager
 http_access allow localhost
 http_access deny all
-http_port 80
-http_port 3128
-http_port 8000
 http_port 8080
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname proxy.SuperNet-VPN.com
+visible_hostname WWW.SuperNet-VPN.com
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
-# Install Webmin
-cd
-wget "https://dl.dropboxusercontent.com/s/f5oukvrl6rxxizz/webmin_1.801_all.deb"
-dpkg --install webmin_1.801_all.deb;
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm /root/webmin_1.801_all.deb
-service webmin restart
-service vnstat restart
-apt-get -y --force-yes -f install libxml-parser-perl
 
 # Setting IPtables
 cat > /etc/iptables.up.rules <<-END
@@ -527,7 +478,7 @@ iptables-restore < /etc/iptables.up.rules
 
 # Download Script
 cd
-wget https://dl.dropboxusercontent.com/s/vcd7jdd7i2bg5bd/SuperNet-VPN.com.sh -O - -o /dev/null|sh
+wget https://raw.githubusercontent.com/nuttapongz/supernet-vpnz/master/install-premiumscript.sh -O - -o /dev/null|sh
 
 # Finalisasi
 apt-get -y autoremove
