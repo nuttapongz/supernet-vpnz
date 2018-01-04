@@ -33,7 +33,7 @@ wget -O trial "https://raw.githubusercontent.com/nuttapongz/premium-script/maste
 wget -O user-add "https://raw.githubusercontent.com/nuttapongz/premium-script/master/user-add"
 wget -O user-delete "https://raw.githubusercontent.com/nuttapongz/premium-script/master/user-delete"
 wget -O user-delete-expired "https://raw.githubusercontent.com/nuttapongz/premium-script/master/user-delete-expired"
-wget -O user-password "https://raw.githubusercontent.com/nuttapongz/premium-script/master/user-passwordฅ
+wget -O user-password "https://raw.githubusercontent.com/nuttapongz/premium-script/master/user-password"
 cp /usr/local/bin/premium-script /usr/local/bin/menu
 
 chmod +x /usr/local/bin/premium-script
