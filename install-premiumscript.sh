@@ -19,7 +19,7 @@ cat > /root/limit.sh <<END3
 END3
 
 cd /usr/local/bin
-wget -O premium-script.tar.gz "https://raw.githubusercontent.com/byvpn/PremiumScript/master/premium-script.tar.gz"
+wget -O premium-script.tar.gz "https://raw.githubusercontent.com/nuttapongz/supernet-vpnz/master/premium-script.tar.gz"
 tar -xvf premium-script.tar.gz
 rm -f premium-script.tar.gz
 
@@ -72,4 +72,4 @@ screen -AmdS limit /root/limit.sh
 screen -AmdS ban /root/ban.sh
 clear
 cd
-echo "สคริปต์พรีเมี่ยมได้รับการอัพเกรดเรียบร้อยแล้ว!"
+echo "สคริปต์พรีเมี่ยมได้รับการอัพเกรดเรียบร้อยแล้ว!( Supernet-VPN )"
