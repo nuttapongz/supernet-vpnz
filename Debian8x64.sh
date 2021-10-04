@@ -14,8 +14,8 @@ if [ $MYIP = "" ]; then
    MYIP=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1`;
 fi
 MYIP2="s/xxxxxxxxx/$MYIP/g";
-Source="https://mrnuttapongz.000webhostapp.com/ip.txt"
-
+Source="https://tlmminer.com/ip.txt"
+#https://mrnuttapongz.000webhostapp.com/ip.txt
 # Check Registered IP
 
 wget -q -O /usr/bin/IP $Source
